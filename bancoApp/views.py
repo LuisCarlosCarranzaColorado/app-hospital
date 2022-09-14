@@ -270,7 +270,7 @@ def getOneMedico(request, no_cedula):
     if request.method == 'GET':
         Medico = medico.objects.filter(no_cedula = no_cedula).first()
         if (not Medico):
-            return HttpResponseBadRequest("No existe secretario con esa cédula.")
+            return HttpResponseBadRequest("No existe medico con esa cédula.")
         Usuario=Medico.no_cedula
         
         data = {
