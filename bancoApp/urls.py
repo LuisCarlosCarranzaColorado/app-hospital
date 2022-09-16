@@ -21,6 +21,7 @@ urlpatterns = [
     
 #url de medicos
     path('getAllMedicos', views.getAllMedicos, name='getAllMedicos'),
+    path('getOneMedico/<int:no_cedula>', views.getOneMedico, name='getOneMedico'),
     path('newMedico', views.newMedico, name='newMedico'),
     path('updateMedico/<int:no_cedula>', views.updateMedico, name='updateMedico'),
     path('deleteMedico/<int:no_cedula>', views.deleteMedico, name='deleteMedico'),
@@ -37,16 +38,10 @@ urlpatterns = [
     path('newPaciente', views.newPaciente, name='newPaciente'),
     path('getOnePaciente/<int:no_cedula>', views.getOnePaciente, name='getOnePaciente'),
 #url de HC
-    path('newHC', views.newHC, name='newHC')
-]
-"""
-
+    path('newHC', views.newHC, name='newHC'),
+    path('getOneHC/<int:no_cedula>', views.getOneHC, name='getOneHC'),
+    path('getAllHC', views.getAllHC, name='getAllHC'),
 
 #url de acompanante
     path('newAcompanante', views.newAcompanante, name='newAcompanante'),
-    path('getOneAcompanante/<int:no_cedula>', views.getOneAcompanante, name='getOneAcompanante'),
-
-#url de historia_clinica
-    path('newHistoria', views.newAcompanante, name='newHistoria'),
-    path('getOneHistoria/<int:no_cedula>', views.getOneHistoria, name='getOneHistoria'),
-"""
+]

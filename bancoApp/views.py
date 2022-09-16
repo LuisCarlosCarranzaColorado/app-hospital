@@ -28,7 +28,6 @@ def newCustomer(request):
             return HttpResponseBadRequest("Error en los datos enviados")
     else:
         return HttpResponseNotAllowed(['POST'], "Método inválido")
-
 def getAllCustomers(request):
     if request.method == 'GET':
         customers = Customer.objects.all()
@@ -47,7 +46,6 @@ def getAllCustomers(request):
         return resp
     else:
         return HttpResponseNotAllowed(['GET'], "Método inválido")
-
 def getOneCustomer(request, id):
     if request.method == 'GET':
         customer = Customer.objects.filter(id = id).first()
@@ -80,7 +78,6 @@ def getOneCustomer(request, id):
         return resp
     else:
         return HttpResponseNotAllowed(['GET'], "Método inválido")
-
 def updateCustomer(request, id):
     if request.method == 'PUT':
         try:
@@ -99,7 +96,6 @@ def updateCustomer(request, id):
             return HttpResponseBadRequest("Error en los datos enviados")
     else:
         return HttpResponseNotAllowed(['PUT'], "Método inválido")
-
 def deleteCustomer(request, id):
     if request.method == 'DELETE':
         try:
@@ -266,25 +262,7 @@ def deleteUsuario(request, no_cedula):
     else:
         return HttpResponseNotAllowed(['DELETE'], "Método inválido")
 
-def getOneMedico(request, no_cedula):
-    if request.method == 'GET':
-        Medico = medico.objects.filter(no_cedula = no_cedula).first()
-        if (not Medico):
-            return HttpResponseBadRequest("No existe medico con esa cédula.")
-        Usuario=Medico.no_cedula
-        
-        data = {
-                "Nombre enfermero": Usuario.primer_nombre + " "+ Usuario.primer_apellido,
-                "rol": Usuario.rol,
-                "turno": Medico.especialidad
-                }
-        dataJson = json.dumps(data)
-        resp = HttpResponse()
-        resp.headers['Content-Type'] = "text/json"
-        resp.content = dataJson
-        return resp
-    else:
-        return HttpResponseNotAllowed(['GET'], "Método inválido")
+
 
 # CRUD MEDICO
 def newMedico(request):
@@ -360,7 +338,36 @@ def deleteMedico(request, no_cedula):
             return HttpResponseBadRequest("Error en los datos enviados")
     else:
         return HttpResponseNotAllowed(['DELETE'], "Método inválido")
-
+def getOneMedico(request, no_cedula):
+    if request.method == 'GET':
+        Medico = medico.objects.filter(no_cedula = no_cedula).first()
+        if (not Medico):
+            return HttpResponseBadRequest("No existe medico con esa cédula.")
+        #UsuarioP=usuario.id_enfermero
+        #UsuarioE=Enfermero.no_cedula
+        Usuario=Medico.no_cedula
+        Pacientes = paciente.objects.filter(id_medico = Medico.id_medico)
+        #UsuarioP = Pacientes.no_cedula
+        accountsData=[]        
+        for x in Pacientes:
+            data2 = {
+                    "id_paciente": x.id_paciente#,
+                    #"nombre": x.primer_nombre
+                   }
+            accountsData.append(data2)
+        data = {
+            "Nombre medico": Usuario.primer_nombre + " "+ Usuario.primer_apellido,
+            "rol": Usuario.rol,
+            "Pacientes": accountsData
+        } 
+        dataJson = json.dumps(data)
+        resp = HttpResponse()
+        resp.headers['Content-Type'] = "text/json"
+        resp.content = dataJson
+        return resp
+    else:
+        return HttpResponseNotAllowed(['GET'], "Método inválido")
+        
 # CRUD SECRETARIO
 
 def newSecretario(request):
@@ -483,20 +490,64 @@ def getOnePaciente(request, no_cedula):
             return HttpResponseBadRequest("No existe paciente con esa cédula.")
         Medico=Paciente.id_medico
         UsuarioM=Medico.no_cedula
-
         Enfermero=Paciente.id_enfermero
         UsuarioE=Enfermero.no_cedula
-        
         Usuario=Paciente.no_cedula
-        
+        HC = historia_clinica.objects.filter(id_paciente = Paciente.id_paciente)
+        print(HC)
+        accountsData=[]        
+        for x in HC:
+            data2 = {
+                    "id_historia": x.id_historia,
+                    "Recomendaciones": x.Recomendaciones,
+                    "Diagnostico": x.diagnostico
+                   }
+            accountsData.append(data2)
         data = {
-                "Nombre paciente": Usuario.primer_nombre + " "+ Usuario.primer_apellido,
-                "rol": Usuario.rol,
-                "Nombre Medico": UsuarioM.primer_nombre +" "+UsuarioM.primer_apellido,
-                "Especialidad Medico":Medico.especialidad,
-                "Enfermero": UsuarioE.primer_nombre +" "+UsuarioE.primer_apellido,
-                "turno enfermero": Enfermero.turno
-                }
+            "Nombre paciente": Usuario.primer_nombre + " "+ Usuario.primer_apellido,
+            "rol": Usuario.rol,
+            "Nombre Medico": UsuarioM.primer_nombre +" "+UsuarioM.primer_apellido,
+            "Especialidad Medico":Medico.especialidad,
+            "Enfermero": UsuarioE.primer_nombre +" "+UsuarioE.primer_apellido,
+            "turno enfermero": Enfermero.turno,
+            "Recomendaciones": accountsData
+        } 
+        dataJson = json.dumps(data)
+        resp = HttpResponse()
+        resp.headers['Content-Type'] = "text/json"
+        resp.content = dataJson
+        return resp
+    else:
+        return HttpResponseNotAllowed(['GET'], "Método inválido")
+def getOnePacientePrueba(request, no_cedula):
+    if request.method == 'GET':
+        Paciente = paciente.objects.filter(no_cedula = no_cedula).first()
+        if (not Paciente):
+            return HttpResponseBadRequest("No existe paciente con esa cédula.")
+        Medico=Paciente.id_medico
+        UsuarioM=Medico.no_cedula
+        Enfermero=Paciente.id_enfermero
+        UsuarioE=Enfermero.no_cedula
+        Usuario=Paciente.no_cedula
+        HC = historia_clinica.objects.filter(id_paciente = Paciente.id_paciente)
+        print(HC)
+        accountsData=[]        
+        for x in HC:
+            data2 = {
+                    "id_historia": x.id_historia,
+                    "Recomendaciones": x.Recomendaciones,
+                    "Diagnostico": x.diagnostico
+                   }
+            accountsData.append(data2)
+        data = {
+            "Nombre paciente": Usuario.primer_nombre + " "+ Usuario.primer_apellido,
+            "rol": Usuario.rol,
+            "Nombre Medico": UsuarioM.primer_nombre +" "+UsuarioM.primer_apellido,
+            "Especialidad Medico":Medico.especialidad,
+            "Enfermero": UsuarioE.primer_nombre +" "+UsuarioE.primer_apellido,
+            "turno enfermero": Enfermero.turno,
+            "Recomendaciones": accountsData
+        } 
         dataJson = json.dumps(data)
         resp = HttpResponse()
         resp.headers['Content-Type'] = "text/json"
@@ -505,8 +556,70 @@ def getOnePaciente(request, no_cedula):
     else:
         return HttpResponseNotAllowed(['GET'], "Método inválido")
 
-
-# CRUD PACIENTE
+# CRUD HC
+def getOneHC(request, no_cedula):
+    if request.method == 'GET':
+        Paciente = paciente.objects.filter(no_cedula = no_cedula).first()
+        if (not Paciente):
+            return HttpResponseBadRequest("No existe paciente creado.")
+        print(Paciente)
+        Usuario = usuario.objects.filter(no_cedula = no_cedula).first()
+        print(Usuario)
+        Hc2 = Paciente.id_paciente    
+        print(Hc2)
+        Hc=historia_clinica.objects.filter(id_paciente = Hc2).first()
+        if (not Hc):
+            return HttpResponseBadRequest("No existe HC asociada al paciente.")
+        print(Paciente)
+        print(Hc)
+        data = {
+                "Nombre paciente": Usuario.primer_nombre + " "+ Usuario.primer_apellido,
+                #"fecha_hora": Hc.fecha_hora,
+                "diagnostico": Hc.diagnostico,
+                "FC": Hc.FC,
+                "TA": Hc.TA,
+                "FR": Hc.FR,
+                "Temp": Hc.Temp,
+                "Oxi": Hc.Oxi,
+                "Recomendaciones": Hc.Recomendaciones
+                }
+        dataJson = json.dumps(data)
+        resp = HttpResponse()
+        resp.headers['Content-Type'] = "text/json"
+        resp.content = dataJson
+        return resp
+    else:
+        return HttpResponseNotAllowed(['GET'], "Método inválido")
+def getAllHC(request):
+    if request.method == 'GET':
+        HC = historia_clinica.objects.all()
+        #Usuario = usuario.objects.filter(id_cedula = Paciente.id_cedula)
+        if (not HC):
+            return HttpResponseBadRequest("No existen historia medicas creadas.")
+        print(HC)
+        Hc = []
+        for x in HC:
+            data = {
+                #"Nombre paciente": Usuario.primer_nombre + " "+ Usuario.primer_apellido,
+                #"fecha_hora": Hc.fecha_hora,
+                "diagnostico": x.diagnostico,
+                "FC": x.FC,
+                "TA": x.TA,
+                "FR": x.FR,
+                "Temp": x.Temp,
+                "Oxi": x.Oxi,
+                "Recomendaciones": x.Recomendaciones,
+                "id":x.id_historia
+                }
+            Hc.append(data)
+        print(Hc)
+        dataJson = json.dumps(Hc)
+        resp = HttpResponse()
+        resp.headers['Content-Type'] = "text/json"
+        resp.content = dataJson
+        return resp
+    else:
+        return HttpResponseNotAllowed(['GET'], "Método inválido")
 def newHC(request):
     if request.method == 'POST':
         try:
@@ -525,7 +638,7 @@ def newHC(request):
                 FR = data["FR"],
                 Temp = data["Temp"],
                 Oxi = data["Oxi"],
-                Recomendaciones = data["Oxi"],
+                Recomendaciones = data["Recomendaciones"],
                 id_paciente = llave
             )
             HC.save()
@@ -534,3 +647,29 @@ def newHC(request):
             return HttpResponseBadRequest("Error en los datos enviados")
     else:
         return HttpResponseNotAllowed(['POST'], "Método inválido")
+
+# acompañante
+# CRUD acompañante
+def newAcompanante(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            print(data)
+            llave = usuario.objects.filter(no_cedula = data["no_cedula"]).first()
+            if (not llave):
+                return HttpResponseBadRequest("No existe acompañante con esa cédula.")
+            llavePac = paciente.objects.filter(id_paciente = data["id_paciente"]).first()
+            if (not llavePac):
+                return HttpResponseBadRequest("No existe paciente con esa.")
+            Acompanante = acompanante(
+                parentesco = data["parentesco"],
+                no_cedula = llave,
+                id_paciente = llavePac
+            )
+            Acompanante.save()
+            return HttpResponse("Nuevo acompanante agregado")
+        except:
+            return HttpResponseBadRequest("Error en los datos enviados")
+    else:
+        return HttpResponseNotAllowed(['POST'], "Método inválido")
+
