@@ -510,7 +510,7 @@ def getOnePaciente(request, no_cedula):
             "Especialidad Medico":Medico.especialidad,
             "Enfermero": UsuarioE.primer_nombre +" "+UsuarioE.primer_apellido,
             "turno enfermero": Enfermero.turno,
-            "Recomendaciones": accountsData
+            "Historias Medicas": accountsData
         } 
         dataJson = json.dumps(data)
         resp = HttpResponse()
