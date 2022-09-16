@@ -338,28 +338,28 @@ def deleteMedico(request, no_cedula):
             return HttpResponseBadRequest("Error en los datos enviados")
     else:
         return HttpResponseNotAllowed(['DELETE'], "Método inválido")
-def getOneMedico(request, no_cedula):
+def getOneMedico(request, no_cedula):# último metodo actualizado
     if request.method == 'GET':
         Medico = medico.objects.filter(no_cedula = no_cedula).first()
         if (not Medico):
             return HttpResponseBadRequest("No existe medico con esa cédula.")
-        #UsuarioP=usuario.id_enfermero
-        #UsuarioE=Enfermero.no_cedula
-        Usuario=Medico.no_cedula
+        print(Medico)
         Pacientes = paciente.objects.filter(id_medico = Medico.id_medico)
-        #UsuarioP = Pacientes.no_cedula
-        accountsData=[]        
+        accountsData=[]    
         for x in Pacientes:
-            data2 = {
-                    "id_paciente": x.id_paciente#,
-                    #"nombre": x.primer_nombre
-                   }
-            accountsData.append(data2)
+                data2 = {
+                        "nombres": x.no_cedula.primer_nombre + " " + x.no_cedula.primer_apellido,
+                        "cedula": x.no_cedula.no_cedula,
+                        "enfermero": x.id_enfermero.no_cedula.primer_nombre + " " + x.id_enfermero.no_cedula.primer_apellido
+                        }
+                accountsData.append(data2)
+        print(accountsData)
         data = {
-            "Nombre medico": Usuario.primer_nombre + " "+ Usuario.primer_apellido,
-            "rol": Usuario.rol,
+            "Nombre medico": Medico.no_cedula.primer_nombre + " "+ Medico.no_cedula.primer_apellido,
+            "rol": Medico.no_cedula.rol,
             "Pacientes": accountsData
         } 
+        print(data)
         dataJson = json.dumps(data)
         resp = HttpResponse()
         resp.headers['Content-Type'] = "text/json"
