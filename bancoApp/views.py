@@ -400,7 +400,7 @@ def getOneSecretario(request, no_cedula):
         Usuario=Secretario.no_cedula
         
         data = {
-                "Nombre enfermero": Usuario.primer_nombre + " "+ Usuario.primer_apellido,
+                "Nombre_enfermero": Usuario.primer_nombre + " "+ Usuario.primer_apellido,
                 "rol": Usuario.rol,
                 "turno": Secretario.turno
                 }
