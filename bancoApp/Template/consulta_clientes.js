@@ -2,7 +2,7 @@ customers = [];
 
 function getCustomers() {
   // Petición HTTP
-  fetch('https://minticreto3.herokuapp.com/getAllUsuarios')
+  fetch('http://127.0.0.1:8000/getAllUsuarios')
     .then(response => {
       console.log(response);
       if (response.ok)
@@ -26,12 +26,9 @@ function handleCustomers() {
   customers.forEach((cust) => {
     const div = document.createElement("div");
     div.innerHTML = `
-      <h3>primer_nombre: ${cust.primer_nombre}</h3>
-      <h3>primer_apellido: ${cust.primer_apellido}</h3>
-      <h3>no_cedula: ${cust.no_cedula}</h3>
-      <h3>no_cedula: ${cust.no_cedula}</h3>
-      <h3>no_cedula: ${cust.no_cedula}</h3>
-      <h3>no_cedula: ${cust.no_cedula}</h3>
+      <h3>Nombre: ${cust.firstName}</h3>
+      <h3>Apellido: ${cust.lastName}</h3>
+      <h3>Cédula: ${cust.id}</h3>
       `;
     divs.push(div);
   });
