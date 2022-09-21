@@ -25,9 +25,10 @@ SECRET_KEY = 'django-insecure-5jvm-s7c)3iytctd0vfyjln#9cwx$fod9l8)ucpmafk*o@-iii
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-CORS_ALLOW_ALL_ORIGEN = True
-CORS_ALLOW_CREDENCIAL = True
+ALLOWED_HOSTS = [  '*' ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
@@ -38,16 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "corsheaders",
-    #'rest_framework',
-    #'authApp',
-    'bancoApp',
+    'corsheaders',
+    'bancoApp'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    "corsheaders.middleware.CorsMiddleware",#agregado
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -86,8 +85,8 @@ DATABASES = {
     }
 }
 """
-
-"""DATABASES = {
+"""
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'bancoG2',
@@ -96,9 +95,8 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'PORT': '3306'
     }
-}"""
-
-
+}
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -109,9 +107,6 @@ DATABASES = {
         'PORT': '5432'
     }
 }
-
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

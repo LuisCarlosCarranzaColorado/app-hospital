@@ -1,8 +1,12 @@
-customers = [];
+//const getMedicosUrl = 'http://127.0.0.1:8000/getAllMedicos';
+const getMedicosUrl = 'https://minticreto3.herokuapp.com/getAllMedicos';
+//const getCustomersUrl = 'http://127.0.0.1:8000/getAllCustomers';
 
-function getCustomers() {
+medicos = [];
+
+function getAllMedicos() {
   // Petición HTTP
-  fetch('http://127.0.0.1:8000/getAllUsuarios')
+  fetch(getMedicosUrl)
     .then(response => {
       console.log(response);
       if (response.ok)
@@ -12,8 +16,8 @@ function getCustomers() {
     })
     .then(data => {
       console.log("Datos: " + data);
-      customers = JSON.parse(data);
-      handleCustomers();
+      medicos = JSON.parse(data);
+      handleMedicos();
     })
     .catch(error => {
       console.error("ERROR: ", error.message);
@@ -21,19 +25,18 @@ function getCustomers() {
     });
 }
 
-function handleCustomers() {
+function handleMedicos() {
   const divs = [];
-  customers.forEach((cust) => {
+  medicos.forEach((cust) => {
     const div = document.createElement("div");
     div.innerHTML = `
-      <h3>Nombre: ${cust.firstName}</h3>
-      <h3>Apellido: ${cust.lastName}</h3>
-      <h3>Cédula: ${cust.id}</h3>
+      <h3>Especialidad: ${cust.especialidad}</h3>
+      <h3>No_cedula: ${cust.no_cedula}</h3>
       `;
     divs.push(div);
   });
   document.getElementById("cargando").remove();
-  const info = document.getElementById("info-customers");
+  const info = document.getElementById("info-medicos");
   divs.forEach(div => info.appendChild(div));
 }
 
@@ -47,4 +50,4 @@ function handleError() {
 
 //-----------------------------------
 
-document.addEventListener("DOMContentLoaded", getCustomers);
+document.addEventListener("DOMContentLoaded", getAllMedicos);
