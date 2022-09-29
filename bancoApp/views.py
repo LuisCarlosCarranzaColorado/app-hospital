@@ -303,10 +303,17 @@ def getPacientes(request):
     else:
         return HttpResponseNotAllowed(['GET'], "Método inválido")
 def newUsuario(request):
-    if request.method == 'POST':
+    if request.method == 'POST':     
         try:
             data = json.loads(request.body)
-            print (data)
+            cedula = data["id"]
+            email = data["email"]
+            Usuario2 = usuario.objects.filter(id = cedula).first()
+            if (Usuario2):
+                return HttpResponseBadRequest("cedula ya existe")
+            Usuario3 = usuario.objects.filter(email = email).first()    
+            if (Usuario3):
+                return HttpResponseBadRequest("ya existe un correo con esa cedula o con ese correo.")
             Usuario = usuario(
                 id = data["id"],
                 primer_nombre = data["primer_nombre"],
