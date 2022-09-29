@@ -1,7 +1,7 @@
 const newUsuarioUrl = 'http://127.0.0.1:8000/newUsuario';
 //const newCustomerUrl = 'http://127.0.0.1:8000/newCustomer';
 
-/*function validate_names(val) {
+function validate_names(val) {
     const letters = /^[A-Z a-z]+$/;
     if (val.match(letters))
         return true;
@@ -9,7 +9,7 @@ const newUsuarioUrl = 'http://127.0.0.1:8000/newUsuario';
         return false;
 }
 
-function validate_id(val) {
+function validate_cedula(val) {
     if (Number(val) > 1000)
         return true;
     else
@@ -21,35 +21,32 @@ function validate_password(val) {
         return true;
     else
         return false;
-}*/
+}
 
 function collectData(evt) {
     evt.preventDefault();
 
-    const no_cedula = document.registro.no_cedula.value;
-    const primer_nombre = document.registro.primer_nombre.value;
-    const segundo_nombre = document.registro.segundo_nombre.value;
-    const primer_apellido = document.registro.primer_apellido.value;
-    const segundo_apellido = document.registro.segundo_apellido.value;
-    const email = document.registro.email.value;
-    const no_celular = document.registro.no_celular.value;
-    const rol = document.registro.rol.value;
-    const contrasena = document.registro.contrasena.value;
-    const fecha_nacimiento = document.registro.fecha_nacimiento.value;
-    const ubicacion_gps_latitud = document.registro.ubicacion_gps_latitud.value;
-    const ubicacion_gps_longitud = document.registro.ubicacion_gps_longitud.value;
+    const id = document.registro.id.value;
+    const primer_nombre = document.registro.primer_nombre.value.trim();
+    const segundo_nombre = document.registro.segundo_nombre.value.trim();
+    const primer_apellido = document.registro.primer_apellido.value.trim();
+    const segundo_apellido = document.registro.segundo_apellido.value.trim();
+    const email = document.registro.email.value.trim();
+    const no_celular = document.registro.no_celular.value.trim();
+    const rol = document.registro.rol.value.trim();
+    const password = document.registro.password.value;
 
-    /*let result = validate_id(id);
+    let result = validate_cedula(id);
     if (!result) {
         alert('Cédula no es válida');
         return;
     }
-    result = validate_names(firstName);
+    result = validate_names(primer_nombre);
     if (!result) {
         alert('Nombre no es válido');
         return;
     }
-    result = validate_names(lastName);
+    result = validate_names(primer_apellido);
     if (!result) {
         alert('Apellido no es válido');
         return;
@@ -58,10 +55,10 @@ function collectData(evt) {
     if (!result) {
         alert('Contraseña no es válida. Debe tener al menos 5 caracteres.');
         return;
-    }*/
+    }
 
     const usuario = {
-        no_cedula: no_cedula,
+        id: id,
         primer_nombre: primer_nombre,
         segundo_nombre: segundo_nombre,
         primer_apellido: primer_apellido,
@@ -69,10 +66,7 @@ function collectData(evt) {
         email: email,
         no_celular: no_celular,
         rol: rol,
-        contrasena: contrasena,
-        fecha_nacimiento: fecha_nacimiento,
-        ubicacion_gps_latitud: ubicacion_gps_latitud,
-        ubicacion_gps_longitud: ubicacion_gps_longitud,
+        password: password
     }
     console.log(usuario);
     const dataToSend = JSON.stringify(usuario);

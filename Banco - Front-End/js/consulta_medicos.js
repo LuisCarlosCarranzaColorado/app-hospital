@@ -1,5 +1,5 @@
-//const getMedicosUrl = 'http://127.0.0.1:8000/getAllMedicos';
-const getMedicosUrl = 'https://minticreto3.herokuapp.com/getAllMedicos';
+const getMedicosUrl = 'http://127.0.0.1:8000/getAllMedicos';
+//const getMedicosUrl = 'https://minticreto3.herokuapp.com/getAllMedicos';
 //const getCustomersUrl = 'http://127.0.0.1:8000/getAllCustomers';
 
 medicos = [];

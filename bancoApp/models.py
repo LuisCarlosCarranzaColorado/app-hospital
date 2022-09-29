@@ -1,5 +1,16 @@
-from pyexpat import model
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.hashers import make_password
+
+class UserManager(BaseUserManager):
+    def create_user(self, username, password):
+        if not username:
+            raise ValueError('Debe tener username')
+
+        user = self.model(email = username)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
 class Customer(models.Model):
     id = models.BigIntegerField(primary_key=True)
@@ -9,26 +20,39 @@ class Customer(models.Model):
     password = models.CharField(max_length=50)
     isAdmin = models.BooleanField(default=False)
 
+
 class Account(models.Model):
     number = models.IntegerField(primary_key=True)
     balance = models.DecimalField(max_digits=20, decimal_places=2, default=0)
     lastChangeDate = models.DateField()
     isActive = models.BooleanField(default=True)
     customer = models.ForeignKey(Customer, related_name='account', on_delete=models.CASCADE)
+"""
+TABLAS HOSPITAL EN CASA
+"""
+class usuario(AbstractBaseUser, PermissionsMixin):
+    id = models.BigIntegerField(primary_key=True)
+    primer_nombre = models.CharField(max_length=50)
+    segundo_nombre = models.CharField(max_length=50)
+    primer_apellido= models.CharField(max_length=50)
+    segundo_apellido= models.CharField(max_length=50)
+    email = models.EmailField(max_length=50, unique=True)
+    no_celular = models.CharField(max_length=20)
+    rol = models.CharField(max_length=50)
+    password = models.CharField(max_length=100)
+    #fecha_nacimiento = models.DateField()
+    #ubicacion_gps_latitud = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    #ubicacion_gps_longitud= models.DecimalField(max_digits=20, decimal_places=2, default=0)
 
-class usuario(models.Model):
-    no_cedula = models.BigIntegerField(primary_key=True)
-    primer_nombre = models.CharField(max_length=255, null=False)
-    segundo_nombre = models.CharField(max_length=255)
-    primer_apellido= models.CharField(max_length=255, null=False)
-    segundo_apellido= models.CharField(max_length=255)
-    email = models.CharField(max_length=255, null=False)
-    no_celular = models.CharField(max_length=255,null=False)
-    rol = models.CharField(max_length=255,null=False)
-    contrasena = models.CharField(max_length=255,null=False)
-    fecha_nacimiento = models.DateField(max_length=255,null=False)
-    ubicacion_gps_latitud = models.DecimalField(max_digits=20, decimal_places=2, default=0)
-    ubicacion_gps_longitud= models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    def save(self, **kwargs):
+            some_salt = 'mMUj0DrIK6vgtdIYepkIxN'
+            #print(self.password)
+            self.password = make_password(self.password, some_salt)
+            #print(self.password)
+            super().save(**kwargs)
+
+    objects = UserManager()
+    USERNAME_FIELD = 'email'
 
 class medico(models.Model):
     id_medico = models.AutoField(primary_key=True)
