@@ -33,7 +33,7 @@ function collectData(evt) {
     const segundo_apellido = document.registro.segundo_apellido.value.trim();
     const email = document.registro.email.value.trim();
     const no_celular = document.registro.no_celular.value.trim();
-    const rol = document.registro.rol.value.trim();
+    const rol = document.registro.rol.value;
     const password = document.registro.password.value;
 
     let result = validate_cedula(id);
@@ -106,6 +106,7 @@ function handleSuccess() {
     const info = document.getElementById("info");
     info.appendChild(message);
     console.log("usuario creado");
+    window.location.href = './login2.html';
     window.alert("usuario creado ok");
 }
 
