@@ -19,23 +19,23 @@ function validate_password(val) {
 }
 
 function collectData(evt) {
+    console.log(userId)
     evt.preventDefault();
-
-    const firstName = document.actualizar.firstName.value.trim();
-    const lastName = document.actualizar.lastName.value.trim();
+    const primer_nombre = document.actualizar.primer_nombre.value.trim();
+    const primer_apellido = document.actualizar.primer_apellido.value.trim();
     const email = document.actualizar.email.value.trim();
     const password = document.actualizar.password.value;
 
     let rasult = true;
-    if (firstName) {
-        let result = validate_names(firstName);
+    if (primer_nombre) {
+        let result = validate_names(primer_nombre);
         if (!result) {
             alert('Nombre no es válido');
             return;
         }
     }
-    if (lastName) {
-        result = validate_names(lastName);
+    if (primer_apellido) {
+        result = validate_names(primer_apellido);
         if (!result) {
             alert('Apellido no es válido');
             return;
@@ -49,17 +49,17 @@ function collectData(evt) {
         }
     }
 
-    const customer = {}
-    if (firstName)
-        customer.firstName = firstName;
-    if (lastName)
-        customer.lastName = lastName;
+    const usuario = {}
+    if (primer_nombre)
+        usuario.primer_nombre = primer_nombre;
+    if (primer_apellido)
+        usuario.primer_apellido = primer_apellido;
     if (email)
-        customer.email = email;
+        usuario.email = email;
     if (password)
-        customer.password = password;
-    console.log(customer);
-    const dataToSend = JSON.stringify(customer);
+        usuario.password = password;
+    console.log(usuario);
+    const dataToSend = JSON.stringify(usuario);
     updateCustomer(dataToSend);
 }
 
@@ -98,15 +98,15 @@ function goBack() {
 }
 
 function showOldData() {
-    const oldFName = sessionStorage.getItem('fname');
-    const oldLName = sessionStorage.getItem('lname');
+    const oldFName = sessionStorage.getItem('primer_nombre');
+    const oldLName = sessionStorage.getItem('primer_apellido');
     const oldEmail = sessionStorage.getItem('email');
 
-    document.actualizar.firstName.placeholder = oldFName;
-    document.actualizar.lastName.placeholder = oldLName;
+    document.actualizar.primer_nombre.placeholder = oldFName;
+    document.actualizar.primer_apellido.placeholder = oldLName;
     document.actualizar.email.placeholder = oldEmail;
 }
 
 // --------------------
 document.actualizar.addEventListener("submit", collectData);
-document.addEventListener('DOMContentLoaded', showOldData);
+//document.addEventListener('DOMContentLoaded', showOldData);

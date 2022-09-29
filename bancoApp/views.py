@@ -201,7 +201,7 @@ def deleteAccount(request, id):
 # Login
 #-----------------
 
-def login2(request):
+"""def login2(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -221,13 +221,14 @@ def login2(request):
         except:
             return HttpResponseBadRequest("Error en los datos enviados")
     else:
-        return HttpResponseNotAllowed(['POST'], "Método inválido")
+        return HttpResponseNotAllowed(['POST'], "Método inválido")"""
 
 # Clases heredadas para mejorar el token a entregar
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super(MyTokenObtainPairSerializer, self).validate(attrs)
         data.update({'id': self.user.id})
+        data.update({'primer_nombre':self.user.primer_nombre})
         return data
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -326,10 +327,10 @@ def newUsuario(request):
             return HttpResponseBadRequest("Error en los datos enviados")
     else:
         return HttpResponseNotAllowed(['POST'], "Método inválido")
-def updateUsuario(request, no_cedula):
+def updateUsuario(request, id):
     if request.method == 'PUT':
         try:
-            Usuario = usuario.objects.filter(no_cedula = no_cedula).first()
+            Usuario = usuario.objects.filter(id = id).first()
             if (not Usuario):
                 return HttpResponseBadRequest("No existe usuario con esa cédula.")
             data = json.loads(request.body)
@@ -340,10 +341,10 @@ def updateUsuario(request, no_cedula):
             Usuario.email = data["email"]
             Usuario.no_celular = data["no_celular"]
             Usuario.rol = data["rol"]
-            Usuario.contrasena = data["contrasena"]
-            Usuario.fecha_nacimiento = data["fecha_nacimiento"]
-            Usuario.ubicacion_gps_latitud = data["ubicacion_gps_latitud"]
-            Usuario.ubicacion_gps_longitud = data["ubicacion_gps_longitud"]
+            Usuario.password = data["password"]
+            #Usuario.fecha_nacimiento = data["fecha_nacimiento"]
+            #Usuario.ubicacion_gps_latitud = data["ubicacion_gps_latitud"]
+            #Usuario.ubicacion_gps_longitud = data["ubicacion_gps_longitud"]
 
             Usuario.save()
             return HttpResponse("usuario actualizado")
@@ -461,6 +462,7 @@ def getOneMedico(request, no_cedula):# último metodo actualizado
         data = {
             "Nombre_medico": Medico.no_cedula.primer_nombre + " "+ Medico.no_cedula.primer_apellido,
             "rol": Medico.no_cedula.rol,
+            "especialidad":Medico.especialidad,
             "Pacientes": accountsData
         } 
         print(data)

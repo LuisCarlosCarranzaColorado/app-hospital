@@ -24,7 +24,7 @@ urlpatterns = [
 #url de usuario
     path('getAllUsuarios', views.getAllUsuarios, name='getAllUsuarios'),
     path('newUsuario', views.newUsuario, name='newUsuario'),
-    path('updateUsuario/<int:no_cedula>', views.updateUsuario, name='updateUsuario'),
+    path('updateUsuario/<int:id>', views.updateUsuario, name='updateUsuario'),
     path('deleteUsuario/<int:no_cedula>', views.deleteUsuario, name='deleteUsuario'),
     path('getOneMedico/<int:no_cedula>', views.getOneMedico, name='getOneMedico'),
     

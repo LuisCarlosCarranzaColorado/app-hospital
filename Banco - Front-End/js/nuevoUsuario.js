@@ -105,6 +105,8 @@ function handleSuccess() {
     message.innerText = "Usuario creado exitosamente.";
     const info = document.getElementById("info");
     info.appendChild(message);
+    console.log("usuario creado");
+    window.alert("usuario creado ok");
 }
 
 function handleError(msg) {

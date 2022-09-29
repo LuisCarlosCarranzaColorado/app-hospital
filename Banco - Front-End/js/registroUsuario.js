@@ -105,6 +105,7 @@ function handleSuccess() {
     message.innerText = "Cliente creado exitosamente.";
     const info = document.getElementById("info");
     info.appendChild(message);
+    window.alert("usuario creado ok");
 }
 
 function handleError() {

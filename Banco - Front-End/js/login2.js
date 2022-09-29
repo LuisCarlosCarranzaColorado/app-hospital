@@ -11,9 +11,9 @@ function collectData(evt) {
         email: email,
         password: password
     }
-    console.log(customer);
+    //console.log(customer);
     const dataToSend = JSON.stringify(customer);
-    console.log(dataToSend);
+    console.log("datos capturados del documentO "+dataToSend);
     login(dataToSend);
 }
 
@@ -27,17 +27,17 @@ function login(data) {
         body: data
     })
         .then(response => {
-            console.log(response);
+            console.log("respuesta promesa "+response);
             if (response.ok || response.status == 401)
                 return response.text()
             else
                 throw new Error(response.text());
         })
         .then(data => {
-            console.log(data);
             if (data.includes("Credenciales inválidas")) {
                 handleError(data);
             }
+            console.log("datos resibidos de la promesa "+data);
             handleSuccess(JSON.parse(data));
         })
         .catch(error => {
@@ -47,17 +47,22 @@ function login(data) {
 }
 
 function handleSuccess(data) {
+    console.log("datos parseados a javascrips"+data)
     document.getElementById("formData").remove();
     const message = document.createElement("p");
     message.innerText = "Ingreso exitoso. Accediendo a su información...";
     const info = document.getElementById("info");
     info.appendChild(message);
-    //console.log(data.access);
-    //console.log(data.refresh);
-    sessionStorage.setItem("accessToken", data.access);
-    sessionStorage.setItem("refreshToken", data.refresh);
+    console.log("datos de refresh en JSON  "+data.refresh);
+    console.log("datos de acceso en JSON  "+data.access);
+    console.log("datos de id en JSON  "+data.id);
+    console.log("datos de nombre en JSON  "+data.primer_nombre);
+    sessionStorage.setItem("accessToken", data.refresh);
+    sessionStorage.setItem("refreshToken", data.access);
     sessionStorage.setItem("clientId", data.id);
-    window.location.href = './cliente.html?id=' + data.id;
+    sessionStorage.setItem("primer_nombre", data.primer_nombre);
+    
+    window.location.href = './medico.html?id=' + data.id;
 }
 
 function handleError(err) {
